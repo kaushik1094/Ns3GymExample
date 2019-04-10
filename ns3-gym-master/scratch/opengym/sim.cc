@@ -21,6 +21,7 @@
 
 #include "ns3/core-module.h"
 #include "ns3/opengym-module.h"
+// #include "ns3/netanim.h"
 
 using namespace ns3;
 
@@ -159,6 +160,8 @@ main (int argc, char *argv[])
 
   RngSeedManager::SetSeed (1);
   RngSeedManager::SetRun (simSeed);
+
+
 
   // OpenGym Env
   Ptr<OpenGymInterface> openGym = CreateObject<OpenGymInterface> (openGymPort);

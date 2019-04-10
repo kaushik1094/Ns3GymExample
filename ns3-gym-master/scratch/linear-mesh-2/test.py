@@ -4,11 +4,6 @@
 import argparse
 from ns3gym import ns3env
 
-__author__ = "Piotr Gawlowicz"
-__copyright__ = "Copyright (c) 2018, Technische Universität Berlin"
-__version__ = "0.1.0"
-__email__ = "gawlowicz@tkn.tu-berlin.de"
-
 
 parser = argparse.ArgumentParser(description='Start simulation script on/off')
 parser.add_argument('--start',

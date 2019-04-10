@@ -22,6 +22,7 @@
 #include "ns3/core-module.h"
 #include "ns3/opengym-module.h"
 #include "mygym.h"
+#include "ns3/netanim-module.h"
 
 using namespace ns3;
 
@@ -57,10 +58,14 @@ main (int argc, char *argv[])
   RngSeedManager::SetSeed (1);
   RngSeedManager::SetRun (simSeed);
 
+
   // OpenGym Env
   Ptr<OpenGymInterface> openGymInterface = CreateObject<OpenGymInterface> (openGymPort);
   Ptr<MyGymEnv> myGymEnv = CreateObject<MyGymEnv> (Seconds(envStepTime));
   myGymEnv->SetOpenGymInterface(openGymInterface);
+
+    AnimationInterface anim("openGym2.xml");
+
 
   NS_LOG_UNCOND ("Simulation start");
   Simulator::Stop (Seconds (simulationTime));

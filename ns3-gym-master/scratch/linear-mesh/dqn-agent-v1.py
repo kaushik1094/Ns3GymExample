@@ -64,7 +64,7 @@ agent1 = DqnAgent(inputQueues, cwSize)
 agent2 = DqnAgent(inputQueues, cwSize)
 agent3 = DqnAgent(inputQueues, cwSize)
 
-total_episodes = 50
+total_episodes = 100
 max_env_steps = 100
 env._max_episode_steps = max_env_steps
 
@@ -143,7 +143,7 @@ for e in range(total_episodes):
 plt.plot(range(len(time_history)), time_history)
 plt.plot(range(len(rew_history)), rew_history)
 plt.xlabel('Episode')
-plt.ylabel('Time')
+plt.ylabel('Reward')
 plt.show()
 
 

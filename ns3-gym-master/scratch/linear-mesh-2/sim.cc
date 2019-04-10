@@ -30,7 +30,7 @@
 #include "ns3/flow-monitor-module.h"
 #include "ns3/traffic-control-module.h"
 #include "ns3/node-list.h"
-
+#include "ns3/netanim-module.h"
 #include "mygym.h"
 
 using namespace ns3;
@@ -249,6 +249,9 @@ main (int argc, char *argv[])
   } else {
     udpServer->TraceConnectWithoutContext ("Rx", MakeBoundCallback (&MyGymEnv::CountRxPkts, myGymEnv, dstNode));
   }
+
+
+  AnimationInterface anim("linearMesh2.xml");
 
   NS_LOG_UNCOND ("Simulation start");
   Simulator::Stop (Seconds (simulationTime));
