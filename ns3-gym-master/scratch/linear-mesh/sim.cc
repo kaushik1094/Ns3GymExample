@@ -30,6 +30,7 @@
 #include "ns3/flow-monitor-module.h"
 #include "ns3/traffic-control-module.h"
 #include "ns3/node-list.h"
+#include "ns3/netanim-module.h"
 
 using namespace ns3;
 
@@ -207,6 +208,7 @@ main (int argc, char *argv[])
   uint32_t payloadSize = 1500;
   bool enabledMinstrel = false;
 
+
   // define datarates
   std::vector<std::string> dataRates;
   dataRates.push_back("OfdmRate1_5MbpsBW5MHz");
@@ -248,8 +250,20 @@ main (int argc, char *argv[])
 
   // Configuration of the scenario
   // Create Nodes
-  NodeContainer nodes;
-  nodes.Create (nodeNum);
+NodeContainer nodes;
+nodes.Create (nodeNum);
+
+//  mobileNode = {nodes.Get(1)};
+
+//  constNodes = {nodes.Get(0), nodes.Get(2), nodes.Get(3), nodes.Get(4)};
+NodeContainer mobileNode;
+mobileNode.Add(nodes.Get(1));
+
+NodeContainer constNodes;
+constNodes.Add(nodes.Get(0));
+constNodes.Add(nodes.Get(2));
+constNodes.Add(nodes.Get(3));
+constNodes.Add(nodes.Get(4));
 
   // WiFi device
   WifiHelper wifi;
@@ -308,8 +322,26 @@ main (int argc, char *argv[])
                                  "DeltaY", DoubleValue (distance),
                                  "GridWidth", UintegerValue (nodeNum),  // will create linear topology
                                  "LayoutType", StringValue ("RowFirst"));
+  mobility.SetMobilityModel ("ns3::GaussMarkovMobilityModel",
+                            "Bounds", BoxValue (Box (0, 150000, 0, 150000, 0, 10000)),
+                            "TimeStep", TimeValue (Seconds (0.5)),
+                            "Alpha", DoubleValue (0.85),
+                            "MeanVelocity", StringValue ("ns3::UniformRandomVariable[Min=800|Max=1200]"),
+                            "MeanDirection", StringValue ("ns3::UniformRandomVariable[Min=0|Max=6.283185307]"),
+                            "MeanPitch", StringValue ("ns3::UniformRandomVariable[Min=0.05|Max=0.05]"),
+                            "NormalVelocity", StringValue ("ns3::NormalRandomVariable[Mean=0.0|Variance=0.0|Bound=0.0]"),
+                            "NormalDirection", StringValue ("ns3::NormalRandomVariable[Mean=0.0|Variance=0.2|Bound=0.4]"),
+                            "NormalPitch", StringValue ("ns3::NormalRandomVariable[Mean=0.0|Variance=0.02|Bound=0.04]"));
+  // mobility.SetMobilityModel ("ns3::RandomWalk2dMobilityModel",
+  //                            "Mode", StringValue ("Time"),
+  //                            "Time", StringValue ("2s"),
+  //                            "Speed", StringValue ("ns3::ConstantRandomVariable[Constant=1.0]"),
+  //                            "Bounds", RectangleValue (Rectangle (0.0, 20.0, 0.0, 20.0)));
+  mobility.Install (mobileNode);
+  // Set mobility random number streams to fixed values
+  // mobility.AssignStreams (mobileNode, 0);
   mobility.SetMobilityModel ("ns3::ConstantPositionMobilityModel");
-  mobility.Install (nodes);
+  mobility.Install (constNodes);
 
   // IP stack and routing
   InternetStackHelper internet;
@@ -389,6 +421,8 @@ main (int argc, char *argv[])
   openGymInterface->SetGetRewardCb( MakeCallback (&MyGetReward) );
   openGymInterface->SetGetExtraInfoCb( MakeCallback (&MyGetExtraInfo) );
   openGymInterface->SetExecuteActionsCb( MakeCallback (&MyExecuteActions) );
+
+  AnimationInterface anim("airborneNs3GymCommSimm.xml");
 
   Simulator::Schedule (Seconds(0.0), &ScheduleNextStateRead, envStepTime, openGymInterface);
 

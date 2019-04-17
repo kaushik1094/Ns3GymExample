@@ -64,8 +64,8 @@ agent1 = DqnAgent(inputQueues, cwSize)
 agent2 = DqnAgent(inputQueues, cwSize)
 agent3 = DqnAgent(inputQueues, cwSize)
 
-total_episodes = 100
-max_env_steps = 100
+total_episodes = 5
+max_env_steps = 5
 env._max_episode_steps = max_env_steps
 
 epsilon = 1.0               # exploration rate
@@ -80,7 +80,7 @@ for e in range(total_episodes):
     state = env.reset()
     state = np.reshape(state, [1, s_size])
     rewardsum = 0
-    for time in range(max_env_steps):
+    for step in range(max_env_steps):
 
         # Choose action
         if np.random.rand(1) < epsilon:
@@ -97,10 +97,11 @@ for e in range(total_episodes):
         # Step
         actionVec = [action0, action1, action2, action3, 100]
         next_state, reward, done, _ = env.step(actionVec)
-
+        print("steps: {}/{}, state: {}, reward: {}, done: {}, action: {}" .format(step, max_env_steps, next_state, reward, done, actionVec))
+       
         if done:
-            print("episode: {}/{}, time: {}, rew: {}, eps: {:.2}"
-                  .format(e, total_episodes, time, rewardsum, epsilon))
+            print("****episode: {}/{}, steps: {}, rew: {}, eps: {:.2}****"
+                  .format(e, total_episodes, step, rewardsum, epsilon))
             break
 
         next_state = np.reshape(next_state, [1, s_size])
@@ -126,7 +127,7 @@ for e in range(total_episodes):
         rewardsum += reward
         if epsilon > epsilon_min: epsilon *= epsilon_decay
         
-    time_history.append(time)
+    time_history.append(step)
     rew_history.append(rewardsum)
 
 #for n in range(2 ** s_size):

@@ -30,9 +30,9 @@ rewards = []
 iterations = []
 
 # Parameters
-alpha = 0.75
+alpha = 0.80
 discount = 0.95
-episodes = 10
+episodes = 20
 
 # Episodes
 for episode in range(episodes):
@@ -55,18 +55,20 @@ for episode in range(episodes):
             action[n] = np.argmax(Q[n, current[n], :] + np.random.randn(1, 10) * (1 / float(episode + 1)))
 
         saction = np.uint(action * 100) + 1
-        #print("action", saction)
+        print("action", saction)
         state, reward, done, info = env.step(saction)
-        #print('state:', state, reward, done)
+        print('step: {} state: {} reward: {} done: {}'.format(i, state, reward, done))
         state = np.uint(np.array(state) / 10 )
 
         t_reward += reward
         for n in range(5):
             Q[n, current[n], action[n]] += alpha * (reward + discount * np.max(Q[n, state[n], :]) - Q[n, current[n], action[n]])
 
-    print("Total reward:", t_reward)
+    # print("Episode: {}/{} Total reward:", t_reward)
+    print("****episode: {}/{}, steps: {}, rew: {}, alpha: {:.2}****"
+                  .format(episode, episodes, i, t_reward, alpha))
     rewards.append(t_reward)
-    iterations.append(i)
+    iterations.append(episode)
 
 # Close environment
 env.close()
@@ -83,7 +85,8 @@ chunks = np.array_split(rewards, size)
 #chunks = chunks_func(rewards, size)
 averages = [sum(chunk) / len(chunk) for chunk in chunks]
 
-plt.plot(averages)
+# plt.plot(range(len(iterations)), iterations)
+plt.plot(range(len(rewards)), rewards)
 plt.xlabel('Episode')
-plt.ylabel('Average Reward')
+plt.ylabel('Reward')
 plt.show()

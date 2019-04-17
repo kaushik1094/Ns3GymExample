@@ -24,7 +24,7 @@ stepIdx = 0
 try:
     obs = env.reset()
     print("Step: ", stepIdx)
-    print("---obs: ", obs)
+    print("---obs:", obs)
 
     while True:
         stepIdx += 1
