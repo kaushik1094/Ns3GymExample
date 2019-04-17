@@ -255,12 +255,12 @@ nodes.Create (nodeNum);
 
 //  mobileNode = {nodes.Get(1)};
 
-//  constNodes = {nodes.Get(0), nodes.Get(2), nodes.Get(3), nodes.Get(4)};
+// //  constNodes = {nodes.Get(0), nodes.Get(2), nodes.Get(3), nodes.Get(4)};
 NodeContainer mobileNode;
-mobileNode.Add(nodes.Get(1));
+mobileNode.Add(nodes.Get(0));
 
 NodeContainer constNodes;
-constNodes.Add(nodes.Get(0));
+constNodes.Add(nodes.Get(1));
 constNodes.Add(nodes.Get(2));
 constNodes.Add(nodes.Get(3));
 constNodes.Add(nodes.Get(4));
@@ -323,7 +323,7 @@ constNodes.Add(nodes.Get(4));
                                  "GridWidth", UintegerValue (nodeNum),  // will create linear topology
                                  "LayoutType", StringValue ("RowFirst"));
   mobility.SetMobilityModel ("ns3::GaussMarkovMobilityModel",
-                            "Bounds", BoxValue (Box (0, 150000, 0, 150000, 0, 10000)),
+                            "Bounds", BoxValue (Box (0, 1500, 0, 1500, 0, 1000)),
                             "TimeStep", TimeValue (Seconds (0.5)),
                             "Alpha", DoubleValue (0.85),
                             "MeanVelocity", StringValue ("ns3::UniformRandomVariable[Min=800|Max=1200]"),

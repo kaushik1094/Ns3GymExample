@@ -32,7 +32,7 @@ iterations = []
 # Parameters
 alpha = 0.80
 discount = 0.95
-episodes = 20
+episodes = 50
 
 # Episodes
 for episode in range(episodes):
@@ -86,7 +86,8 @@ chunks = np.array_split(rewards, size)
 averages = [sum(chunk) / len(chunk) for chunk in chunks]
 
 # plt.plot(range(len(iterations)), iterations)
-plt.plot(range(len(rewards)), rewards)
+plt.title('Liner Mesh Example')
+plt.plot(range(len(rewards)), rewards, label = 'cubic', color = 'red', marker = 'o', markersize = 3, markerfacecolor = "blue")
 plt.xlabel('Episode')
 plt.ylabel('Reward')
 plt.show()
